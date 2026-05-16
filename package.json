@@ -1,0 +1,25 @@
+{
+  "name": "annoyingnotifier",
+  "version": "1.0.0",
+  "description": "煩わしい通知をプレゼント！",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sensoymito/AnnoyingNotifier.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sensoymito/AnnoyingNotifier/issues"
+  },
+  "homepage": "https://github.com/sensoymito/AnnoyingNotifier#readme",
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "typescript": "^6.0.3"
+  }
+}
