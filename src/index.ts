@@ -1,27 +1,27 @@
 import { execSync } from "child_process"
 
 const title = "タイトル"
-const message = "通知メッセージ"
+const msg = "通知メッセージ"
 
 const script = `
-[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+$ProgressPreference = 'SilentlyContinue'
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+$n = New-Object System.Windows.Forms.NotifyIcon
+$n.Icon = [System.Drawing.SystemIcons]::Information
+$n.BalloonTipIcon = 'Info'
+$n.BalloonTipTitle = '${title}'
+$n.BalloonTipText = '${msg}'
+$n.Visible = $true
+$n.ShowBalloonTip(5000)
 
-$template = @"
-<toast>
-  <visual>
-    <binding template="ToastGeneric">
-      <text>${title}</text>
-      <text>${message}</text>
-    </binding>
-  </visual>
-</toast>
-"@
-
-$xml = New-Object Windows.Data.Xml.Dom.XmlDocument
-$xml.LoadXml($template)
-$toast = [Windows.UI.Notifications.ToastNotification]::new($xml)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("AnnoyingNotifier").Show($toast)
+$end = (Get-Date).AddSeconds(5)
+while ((Get-Date) -lt $end) {
+    [System.Windows.Forms.Application]::DoEvents()
+    Start-Sleep -Milliseconds 100
+}
+$n.Dispose()
 `
 
-execSync(`powershell -Command "${script.replace(/"/g, '`$&')}"`, { stdio: "inherit" })
+const encoded = Buffer.from(script, "utf16le").toString("base64")
+execSync(`powershell -NoProfile -EncodedCommand ${encoded}`)
